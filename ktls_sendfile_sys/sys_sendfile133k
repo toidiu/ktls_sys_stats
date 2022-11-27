@@ -1,4 +1,3 @@
-Hello, world! Some("./build/bin/s2nc") []
 376777, 0| ens5 52 74| lo 0 0| 
 376777, 0| ens5 17984 4832988| lo 0 0| 
 376777, 0| ens5 110344 44354074| lo 0 0| 
@@ -29,19 +28,4 @@ Hello, world! Some("./build/bin/s2nc") []
 376777, 12.09068| ens5 183460 75059247| lo 0 0| 
 376777, 14.105794| ens5 182884 75420006| lo 0 0| 
 376777, 10.025063| ens5 181084 75880379| lo 0 0| 
-CONNECTED:
-Handshake: NEGOTIATED|FULL_HANDSHAKE|MIDDLEBOX_COMPAT
-Client hello version: 33
-Client protocol version: 34
-Server protocol version: 34
-Actual protocol version: 34
-Server name: 34.219.192.115
-Curve: x25519
-KEM: NONE
-KEM Group: NONE
-Cipher negotiated: TLS_AES_128_GCM_SHA256
-Server signature negotiated: RSA-PSS-RSAE+SHA256
-Early Data status: NOT REQUESTED
-s2n is ready
-Connected to 34.219.192.115:5000
 376777, 10.025063| ens5 49245 15270524| lo 340 340| 
