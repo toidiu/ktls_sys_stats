@@ -1,11 +1,14 @@
+#![allow(unused)]
+
 use std::{
-    fs::{self, File, OpenOptions},
+    fs::{self, OpenOptions},
     io::{BufRead, BufReader, Write},
     path::PathBuf,
 };
-use tempfile::{tempfile, NamedTempFile};
+use tempfile::NamedTempFile;
 
-pub(crate) fn clean_dir(dir: &str) {
+pub(crate) fn clean_dir() {
+    let dir = "./data/ktls_sendfile_sys";
     let paths = fs::read_dir(dir).unwrap();
 
     for path in paths {
