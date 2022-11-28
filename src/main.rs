@@ -1,3 +1,4 @@
+use byte_unit::Byte;
 use plotly::{
     common::{ErrorData, ErrorType},
     layout::GridPattern,
@@ -82,8 +83,8 @@ struct Sys {
     title: Vec<String>,
     sec: Vec<f64>,
     cpu: Vec<f64>,
-    net_rx: Vec<f64>,
-    net_tx: Vec<f64>,
+    net_rx: Vec<Byte>,
+    net_tx: Vec<Byte>,
 }
 
 impl Sys {
@@ -107,7 +108,7 @@ impl Sys {
             .push(s.next().expect("next").parse().expect("parse"));
         self.net_rx
             .push(s.next().expect("next").parse().expect("parse"));
-        self.sec
+        self.net_tx
             .push(s.next().expect("next").parse().expect("parse"));
     }
 }
