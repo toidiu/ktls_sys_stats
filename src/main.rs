@@ -6,9 +6,13 @@ use plotly::{
     Plot, Scatter,
 };
 
+mod clean_data;
+
 fn main() {
+    clean_data::clean_dir("./data/send_sys");
+
     println!("Hello, world!");
-    simple_subplot(true);
+    // simple_subplot(true);
 }
 
 fn simple_subplot(show: bool) {

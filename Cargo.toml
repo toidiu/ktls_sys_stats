@@ -7,3 +7,4 @@ edition = "2021"
 
 [dependencies]
 plotly = { version = "0.8.3", features = ["kaleido"]}
+tempfile = "3.3.0"
