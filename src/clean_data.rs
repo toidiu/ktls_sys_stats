@@ -24,10 +24,30 @@ fn clean_file(path: PathBuf) {
             .open(path.clone())
             .unwrap();
 
+        temp.write_all(b"sec, CPU, net_name, net_rx, net_tx\n")
+            .unwrap();
+
+        let mut ts = 0.0;
         for line in BufReader::new(file).lines() {
             let mut line = line.unwrap();
             line.push('\n');
-            temp.write_all(line.as_bytes()).unwrap();
+            // 338643, 0| ens5 164 472| lo 0 0|
+            let mut net_split = line.split('|');
+
+            let cpu = net_split.next().unwrap().split_whitespace().last().unwrap();
+
+            let net: String = net_split.filter(|e| e.contains("ens5")).collect();
+            // println!("{:?}", net.len());
+
+            let net: Vec<&str> = net.split_whitespace().collect();
+            let (rx, tx) = (net.get(1).unwrap(), net.get(2).unwrap());
+
+            let data = format!("{}, {}, {}, {}\n", ts, cpu, rx, tx);
+            println!("{}", data);
+
+            temp.write_all(data.as_bytes()).unwrap();
+
+            ts += 0.5;
         }
     }
 
