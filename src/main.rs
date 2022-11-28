@@ -9,7 +9,7 @@ use plotly::{
 mod clean_data;
 
 fn main() {
-    clean_data::clean_dir("./data/send_sys");
+    clean_data::clean_dir("./data/ktls_sendfile_sys");
 
     println!("Hello, world!");
     // simple_subplot(true);
