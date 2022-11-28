@@ -5,13 +5,15 @@ use plotly::{
     layout::LayoutGrid,
     Plot, Scatter,
 };
+use std::io::BufRead;
+use std::{fs, io::BufReader};
 
 mod clean_data;
 
 fn main() {
     // clean_data::clean_dir();
 
-    println!("Hello, world!");
+    data_from_dir();
     // simple_subplot(true);
 }
 
@@ -48,4 +50,64 @@ fn error_plot() {
     plot.write_html("out.html");
 
     // plot.write_image("out.png", ImageFormat::PNG, 800, 600, 1.0);
+}
+
+pub fn data_from_dir() {
+    let dir = "./data/send_sys";
+    let paths = fs::read_dir(dir).unwrap();
+
+    for path in paths {
+        let file = fs::File::open(path.unwrap().path()).unwrap();
+        // println!("{}", path.as_ref().unwrap().path().display());
+
+        let mut sys: Option<Sys> = None;
+        for line in BufReader::new(file).lines() {
+            let update = if let Some(mut sys) = sys.take() {
+                sys.push(line.unwrap());
+                // println!("{}", line.unwrap());
+                Some(sys)
+            } else {
+                Some(Sys::new(line.unwrap()))
+            };
+
+            sys = update;
+        }
+
+        println!("{:?}", sys.unwrap());
+    }
+}
+
+#[derive(Debug)]
+struct Sys {
+    title: Vec<String>,
+    sec: Vec<f64>,
+    cpu: Vec<f64>,
+    net_rx: Vec<f64>,
+    net_tx: Vec<f64>,
+}
+
+impl Sys {
+    fn new(s: String) -> Self {
+        let s: Vec<String> = s.split(',').map(String::from).collect();
+        Sys {
+            title: s,
+            sec: Vec::new(),
+            cpu: Vec::new(),
+            net_rx: Vec::new(),
+            net_tx: Vec::new(),
+        }
+    }
+
+    fn push(&mut self, s: String) {
+        let mut s = s.split(',').map(|s| String::from(s.trim()));
+
+        self.sec
+            .push(s.next().expect("next").parse().expect("parse"));
+        self.cpu
+            .push(s.next().expect("next").parse().expect("parse"));
+        self.net_rx
+            .push(s.next().expect("next").parse().expect("parse"));
+        self.sec
+            .push(s.next().expect("next").parse().expect("parse"));
+    }
 }
