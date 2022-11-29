@@ -25,7 +25,15 @@ pub fn data_from_dir(dir: &str) -> SysGroup {
                 // println!("{}", line.unwrap());
                 Some(sys)
             } else {
-                Some(SysStats::new(path.to_string(), line.unwrap()))
+                let path = path
+                    .to_string()
+                    .split('/')
+                    .last()
+                    .unwrap()
+                    .strip_prefix("sys_")
+                    .unwrap()
+                    .to_string();
+                Some(SysStats::new(path, line.unwrap()))
             };
 
             sys = update;
