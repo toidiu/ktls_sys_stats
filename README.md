@@ -13,5 +13,14 @@ A comparison of `send` vs `ktls+send` vs `ktls+sendfile`. An interactive html gr
 [interactive html ktls_sendfile_sys](./data/plots/cpu/plotly_ktls_sendfile_sys.html)
 ![ktls_sendfile_sys](./data/plots/cpu/plotly_ktls_sendfile_sys.png)
 
-## TODO
-graph the network thruput
+
+## Network TX data
+[interactive html send_sys](./data/plots/net_tx/plotly_send_sys.html)
+![send_sys](./data/plots/net_tx/plotly_send_sys.png)
+
+[interactive html ktls_send_sys](./data/plots/net_tx/plotly_ktls_send_sys.html)
+![ktls_send_sys](./data/plots/net_tx/plotly_ktls_send_sys.png)
+
+[interactive html ktls_sendfile_sys](./data/plots/net_tx/plotly_ktls_sendfile_sys.html)
+![ktls_sendfile_sys](./data/plots/net_tx/plotly_ktls_sendfile_sys.png)
+
