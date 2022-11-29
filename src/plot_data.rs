@@ -21,7 +21,11 @@ pub fn plot_stats(sys_group: SysGroup, show: bool) {
     }
 
     let layout = Layout::new()
-        .title(sys_group.title.as_str().into())
+        .title(
+            format!("{} (cpu%)", sys_group.title.as_str())
+                .as_str()
+                .into(),
+        )
         .show_legend(true)
         .grid(
             LayoutGrid::new()
