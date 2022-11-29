@@ -78,7 +78,7 @@ where
                 .into(),
         )
         .show_legend(true)
-        .height(1000)
+        .height(1500)
         .grid(
             LayoutGrid::new()
                 .rows(3)

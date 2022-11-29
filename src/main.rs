@@ -1,4 +1,4 @@
-use parse_data::{SysGroup, SysStats};
+use parse_data::SysGroup;
 use plot_data::plot_multiple_groups;
 
 mod clean_data;
@@ -13,7 +13,11 @@ fn main() {
     let ktls_send_sys_stats = parse_data::data_from_dir("./data/ktls_send_sys");
     let ktls_sendfile_sys_stats = parse_data::data_from_dir("./data/ktls_sendfile_sys");
 
-    // plot_by_group(send_sys_stats, ktls_send_sys_stats, ktls_sendfile_sys_stats);
+    plot_by_group(
+        send_sys_stats.clone(),
+        ktls_send_sys_stats.clone(),
+        ktls_sendfile_sys_stats.clone(),
+    );
     plot_by_payload_size(send_sys_stats, ktls_send_sys_stats, ktls_sendfile_sys_stats);
 }
 
@@ -39,7 +43,12 @@ fn plot_by_payload_size(
     }
 
     let show = true;
-    plot_multiple_groups(group_by_payload, |sys_stat| sys_stat.cpu, "cpu %", show);
+    plot_multiple_groups(
+        group_by_payload,
+        |sys_stat| sys_stat.cpu,
+        "sec vs cpu %",
+        show,
+    );
 }
 
 // --------- net rx: is not interesting since we sent data in the scenario
@@ -52,39 +61,40 @@ fn plot_by_group(
     plot_data::plot_stats(
         send_sys_stats.clone(),
         |sys_stat| sys_stat.cpu,
-        "cpu %",
+        "sec vs cpu %",
         show,
     );
     plot_data::plot_stats(
         ktls_send_sys_stats.clone(),
         |sys_stat| sys_stat.cpu,
-        "cpu %",
+        "sec vs cpu %",
         show,
     );
     plot_data::plot_stats(
         ktls_sendfile_sys_stats.clone(),
         |sys_stat| sys_stat.cpu,
-        "cpu %",
+        "sec vs cpu %",
         show,
     );
 
     // --------- net tx
+    let show = false;
     plot_data::plot_stats(
         send_sys_stats,
         |sys_stat| sys_stat.net_tx.iter().map(|v| v.get_bytes()).collect(),
-        "net tx bytes",
+        "sec vs net_tx bytes",
         show,
     );
     plot_data::plot_stats(
         ktls_send_sys_stats,
         |sys_stat| sys_stat.net_tx.iter().map(|v| v.get_bytes()).collect(),
-        "net tx bytes",
+        "sec vs net_tx bytes",
         show,
     );
     plot_data::plot_stats(
         ktls_sendfile_sys_stats,
         |sys_stat| sys_stat.net_tx.iter().map(|v| v.get_bytes()).collect(),
-        "net tx bytes",
+        "sec vs net_tx bytes",
         show,
     );
 }
