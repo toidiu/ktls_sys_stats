@@ -82,7 +82,7 @@ pub struct SysStats {
 }
 
 impl SysStats {
-    fn new(title: String, legend: String) -> Self {
+    pub fn new(title: String, legend: String) -> Self {
         let legend: Vec<String> = legend.split(',').map(String::from).collect();
         SysStats {
             title,
