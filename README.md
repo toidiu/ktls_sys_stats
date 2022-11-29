@@ -2,9 +2,14 @@
 
 A comparison of `send` vs `ktls+send` vs `ktls+sendfile`. An interactive html graph can be found in the data/plots/(cpu,net_tx) directory.
 
-## CPU % data by payload
+## CPU % by payload
 [interactive html send_sys](./data/plots/cpu/by_payload.html)
 ![send_sys](./data/plots/cpu/by_payload.png)
+
+## Network TX by payload
+[interactive html send_sys](./data/plots/net_tx/by_payload.html)
+![send_sys](./data/plots/net_tx/by_payload.png)
+
 
 ## CPU % data
 [interactive html send_sys](./data/plots/cpu/plotly_send_sys.html)
