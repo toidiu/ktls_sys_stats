@@ -1,9 +1,10 @@
 use byte_unit::Byte;
 use std::io::BufRead;
+use std::path::Path;
 use std::{fs, io::BufReader};
 
-pub fn data_from_dir() -> Vec<SysStats> {
-    let dir = "./data/send_sys";
+pub fn data_from_dir(dir: &str) -> SysGroup {
+    let dir_name = Path::new(dir).iter().last().unwrap().to_str().unwrap();
     let paths = fs::read_dir(dir).unwrap();
 
     let mut sys_stats = Vec::new();
@@ -31,17 +32,25 @@ pub fn data_from_dir() -> Vec<SysStats> {
         println!("{:?}", sys.as_ref().unwrap());
         sys_stats.push(sys.unwrap());
     }
-    sys_stats
+    SysGroup {
+        title: dir_name.to_string(),
+        sys: sys_stats,
+    }
+}
+
+pub struct SysGroup {
+    pub title: String,
+    pub sys: Vec<SysStats>,
 }
 
 #[derive(Debug)]
 pub struct SysStats {
-    title: String,
-    legend: Vec<String>,
-    sec: Vec<f64>,
-    cpu: Vec<f64>,
-    net_rx: Vec<Byte>,
-    net_tx: Vec<Byte>,
+    pub title: String,
+    pub legend: Vec<String>,
+    pub sec: Vec<f64>,
+    pub cpu: Vec<f64>,
+    pub net_rx: Vec<Byte>,
+    pub net_tx: Vec<Byte>,
 }
 
 impl SysStats {
