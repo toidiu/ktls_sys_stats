@@ -1,17 +1,22 @@
 use byte_unit::Byte;
+use regex::Regex;
 use std::io::BufRead;
 use std::path::Path;
 use std::{fs, io::BufReader};
 
 pub fn data_from_dir(dir: &str) -> SysGroup {
     let dir_name = Path::new(dir).iter().last().unwrap().to_str().unwrap();
+
     let paths = fs::read_dir(dir).unwrap();
+    let mut paths: Vec<String> = paths
+        .map(|path| path.unwrap().path().to_string_lossy().to_string())
+        .collect();
+    sort_file_by_size(&mut paths);
 
     let mut sys_stats = Vec::new();
     for path in paths {
-        let path = path.unwrap().path();
         let file = fs::File::open(path.clone()).unwrap();
-        // println!("{}", path.as_ref().unwrap().path().display());
+        // println!("{}", path);
 
         let mut sys: Option<SysStats> = None;
         for line in BufReader::new(file).lines() {
@@ -20,22 +25,36 @@ pub fn data_from_dir(dir: &str) -> SysGroup {
                 // println!("{}", line.unwrap());
                 Some(sys)
             } else {
-                Some(SysStats::new(
-                    path.file_name().unwrap().to_str().unwrap().to_string(),
-                    line.unwrap(),
-                ))
+                Some(SysStats::new(path.to_string(), line.unwrap()))
             };
 
             sys = update;
         }
 
-        println!("{:?}", sys.as_ref().unwrap());
+        // println!("{:?}", sys.as_ref().unwrap());
         sys_stats.push(sys.unwrap());
     }
+
     SysGroup {
         title: dir_name.to_string(),
         sys: sys_stats,
     }
+}
+
+fn sort_file_by_size(paths: &mut [String]) {
+    // sort by the payload size
+    paths.sort_by(|a, b| {
+        let a = a.split('/').last().unwrap();
+        let b = b.split('/').last().unwrap();
+
+        let re = Regex::new(r"^[a-z]*_[a-z]*_*[a-z]*").unwrap();
+        let a = re.replace(a, "");
+        let b = re.replace(b, "");
+        let a = Byte::from_str(a).unwrap();
+        let b = Byte::from_str(b).unwrap();
+
+        a.cmp(&b)
+    });
 }
 
 pub struct SysGroup {

@@ -1,10 +1,7 @@
-use crate::parse_data::{SysGroup, SysStats};
+use crate::parse_data::SysGroup;
 use plotly::{layout::GridPattern, layout::Layout, layout::LayoutGrid, Plot, Scatter};
 
 pub fn plot_stats(sys_group: SysGroup, show: bool) {
-    // simple_subplot(true);
-    // return;
-
     let mut plot = Plot::new();
 
     let _len = sys_group.sys.len();
@@ -36,31 +33,7 @@ pub fn plot_stats(sys_group: SysGroup, show: bool) {
     if show {
         plot.show();
     }
-    println!("{}", plot.to_inline_html(Some("simple_subplot")));
-}
-
-fn simple_subplot(show: bool) {
-    let trace1 = Scatter::new(vec![1, 2, 3], vec![4, 5, 6]).name("trace1");
-    let trace2 = Scatter::new(vec![20, 30, 40], vec![50, 60, 70])
-        .name("trace2")
-        .x_axis("x2")
-        .y_axis("y2");
-
-    let mut plot = Plot::new();
-    plot.add_trace(trace1);
-    plot.add_trace(trace2);
-
-    let layout = Layout::new().grid(
-        LayoutGrid::new()
-            .rows(1)
-            .columns(2)
-            .pattern(GridPattern::Independent),
-    );
-    plot.set_layout(layout);
-    if show {
-        plot.show();
-    }
-    println!("{}", plot.to_inline_html(Some("simple_subplot")));
+    // println!("{}", plot.to_inline_html(Some("simple_subplot")));
 }
 
 // fn error_plot() {
