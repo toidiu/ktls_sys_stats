@@ -9,4 +9,5 @@ edition = "2021"
 byte-unit = "4.0.17"
 plotly = { version = "0.8.3", features = ["kaleido"]}
 regex = "1.7.0"
+serde = "1.0.148"
 tempfile = "3.3.0"

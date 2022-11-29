@@ -1,7 +1,11 @@
-use crate::parse_data::SysGroup;
+use crate::parse_data::{SysGroup, SysStats};
 use plotly::{layout::GridPattern, layout::Layout, layout::LayoutGrid, Plot, Scatter};
 
-pub fn plot_stats(sys_group: SysGroup, show: bool) {
+pub fn plot_stats<F, T>(sys_group: SysGroup, f: F, title: &str, show: bool)
+where
+    F: FnOnce(SysStats) -> Vec<T> + std::marker::Copy,
+    T: serde::ser::Serialize + std::clone::Clone + 'static,
+{
     let mut plot = Plot::new();
 
     let _len = sys_group.sys.len();
@@ -12,8 +16,9 @@ pub fn plot_stats(sys_group: SysGroup, show: bool) {
         } else {
             subplot.to_string()
         };
-        let trace = Scatter::new(stat.sec.clone(), stat.cpu.clone())
-            .name(stat.title.clone())
+        let name = stat.title.clone();
+        let trace = Scatter::new(stat.sec.clone(), f(stat))
+            .name(name)
             .x_axis("x")
             .y_axis("y");
         plot.add_trace(trace);
@@ -22,7 +27,7 @@ pub fn plot_stats(sys_group: SysGroup, show: bool) {
 
     let layout = Layout::new()
         .title(
-            format!("{} (cpu%)", sys_group.title.as_str())
+            format!("{} ({})", sys_group.title.as_str(), title)
                 .as_str()
                 .into(),
         )

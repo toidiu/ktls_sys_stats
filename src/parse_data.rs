@@ -65,12 +65,13 @@ fn sort_file_by_size(paths: &mut [String]) {
     });
 }
 
+#[derive(Clone)]
 pub struct SysGroup {
     pub title: String,
     pub sys: Vec<SysStats>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct SysStats {
     pub title: String,
     pub legend: Vec<String>,
